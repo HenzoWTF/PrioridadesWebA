@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Library.Models;
 
-public class Prioridad
+public class Prioridades
 {
     [Range(1, int.MaxValue, ErrorMessage = "Debe ser mayor que 0")]
     [Key]

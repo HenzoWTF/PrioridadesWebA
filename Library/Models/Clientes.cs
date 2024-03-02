@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Library.Models;
 
-public class Cliente
+public class Clientes
 {
     [Range(1, int.MaxValue, ErrorMessage = "Debe ser mayor que 0")]
     [Key]

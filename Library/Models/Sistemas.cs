@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Library.Models;
 
-public class Sistema
+public class Sistemas
 {
     [Key]
     public int SistemasId { get; set; }
