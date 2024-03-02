@@ -1,0 +1,23 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Library.Models;
+
+public class Prioridad
+{
+    [Range(1, int.MaxValue, ErrorMessage = "Debe ser mayor que 0")]
+    [Key]
+    public int IdPrioridades { get; set; }
+
+    [Required(ErrorMessage = "El campo Descripcion es obligatorio")]
+    public string? Descripcion { get; set; }
+
+    [Range(1, 31, ErrorMessage = "Debe de insertar un dia de compromiso dentro del rango [1-31]")]
+    [Required(ErrorMessage = "El campo Dias Compromiso es obligatorio")]
+    public int DiasCompromiso { get; set; }
+
+}
