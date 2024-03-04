@@ -18,11 +18,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DATA\" />
+    <ProjectReference Include="..\Library\Library.csproj" />
+    <ProjectReference Include="..\PrioridadesWebA\PrioridadesWebA.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Library\Library.csproj" />
+    <Folder Include="DATA\" />
   </ItemGroup>
 
 </Project>

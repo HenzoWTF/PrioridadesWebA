@@ -1,0 +1,99 @@
+﻿@page "/DeleteCliente/Id={Id:int}"
+@using Library.Models
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+
+<PageTitle>Eliminar Cliente</PageTitle>
+
+<div class="container">
+	<div class="card shadow-lg">
+		@*Header*@
+		<div class="card-header">
+			<h3><strong>Eliminar Cliente</strong></h3>
+		</div>
+		<div class="card-body col-5">
+			<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
+			<h4><strong>¿Est&aacute;s seguro de que quieres eliminar este cliente?</strong></h4>
+			@*Datos*@
+
+            @*Clientes ID*@
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4">
+                <h4>
+                    <strong>ID:</strong>
+                    @clientes.ClientesID
+                </h4>
+            </div>
+
+            @*Nombre*@
+            <h4>
+                <strong>Nombre: </strong>
+                @clientes.NombresClientes
+            </h4>
+
+            @*Telefono*@
+            <h4>
+                <strong>Tel&eacute;fono: </strong>
+                @clientes.TelefonoClientes
+
+            </h4>
+
+            @*Celular*@
+            <h4>
+                <strong>Celular: </strong>
+                @clientes.CelularClientes
+            </h4>
+
+            @*RNC*@
+            <h4>
+                <strong>RNC: </strong>
+                @clientes.RNC
+            </h4>
+
+            @*Email*@
+            <h4>
+                <strong>Email: </strong>
+                @clientes.EmailClientes
+            </h4>
+
+            @*Direccion*@
+            <h4>
+                <strong>Direcci&oacuten: </strong>
+                @clientes.DireccionClientes
+            </h4>
+
+		</div>
+
+		<div class="card-footer d-flex justify-content-center">
+			<div class="px-2">
+                <a href="IndexCliente" class="btn btn-outline-primary"><i class="bi bi-box-arrow-left" /> Volver</a>
+			</div>
+			<button type="button" class="btn btn-outline-danger" @onclick="Eliminar"><i class="bi bi-trash3-fill" /> Eliminar</button>
+		</div>
+
+	</div>
+</div>
+
+
+@code {
+    [Parameter] public int Id { get; set; }
+    public Clientes clientes { get; set; } = new Clientes();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id > 0)
+        {
+            clientes = await httpClient.GetFromJsonAsync<Clientes>($"api/Clientes/{Id}");
+        }
+    }
+
+    public async Task Eliminar()
+    {
+        var response = await httpClient.DeleteAsync($"api/Clientes/{Id}");
+
+        if (response.IsSuccessStatusCode)
+        {
+
+            navigationManager.NavigateTo("/IndexCliente");
+        }
+    }
+}

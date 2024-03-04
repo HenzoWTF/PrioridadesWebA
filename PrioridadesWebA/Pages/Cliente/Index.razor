@@ -1,0 +1,69 @@
+﻿@page "/IndexCliente"
+
+@using Library.Models
+@using Microsoft.AspNetCore.Components.QuickGrid;
+@inject NavigationManager navigationManager
+@inject HttpClient httpClient
+
+<PageTitle>Consulta Clientes</PageTitle>
+
+<h1>Consultas Clientes</h1>
+
+<div>
+    <a href="/CreateCliente" class="btn btn-outline-primary">Agregar Cliente</a>
+</div>
+
+<table class="table-sm">
+    <tbody class="table-primary">
+
+        <QuickGrid ItemsProvider="@clientes">
+
+            <PropertyColumn Property="@(c =>c.ClientesID )" Sortable="true" Title="Id" />
+            <PropertyColumn Property="@(c => c.NombresClientes)" Sortable="true" Title="Nombre" />
+            <PropertyColumn Property="@(c => c.CelularClientes)" Sortable="true" Title="Celular" />
+            <PropertyColumn Property="@(c => c.TelefonoClientes)" Sortable="true" Title="Telefono" />
+            <PropertyColumn Property="@(c => c.RNC)" Sortable="true" />
+            <PropertyColumn Property="@(c => c.EmailClientes)" Sortable="true" Title="Email" />
+            <PropertyColumn Property="@(c => c.DireccionClientes)" Sortable="true" Title="Dirección" />
+
+            <TemplateColumn Title="Acciones">
+                <button class="btn btn-outline-primary" @onclick="@(() => IrEdit(context))"><i class="bi bi-pencil-square" /></button>
+                <button class="btn btn-outline-primary" @onclick="@(() => IrDetalle(context))"><i class="bi bi-eye-fill" /></button>
+                <button class="btn btn-outline-danger" @onclick="@(() => IrEliminar(context))"><i class="bi bi-trash" /></button>
+            </TemplateColumn>
+        </QuickGrid>
+    </tbody>
+</table>
+
+@code
+{
+
+    public List<Clientes> listclientes { get; set; } = new List<Clientes>();
+    public Clientes clientess { get; set; } = new Clientes();
+    GridItemsProvider<Clientes>? clientes;
+    bool cargando = true;
+
+    protected override void OnInitialized()
+    {
+        clientes = async req =>
+        {
+            var respuesta = await httpClient.GetFromJsonAsync<Clientes[]>("api/Clientes");
+            cargando = false;
+            return GridItemsProviderResult.From(items: respuesta!, totalItemCount: respuesta!.Count());
+        };
+    }
+
+    public void IrEliminar(Clientes cliente)
+    {
+        navigationManager.NavigateTo($"/DeleteCliente/Id={cliente.ClientesID}");
+    }
+    public void IrDetalle(Clientes cliente)
+    {
+        navigationManager.NavigateTo($"/DetailsCliente/Id={cliente.ClientesID}");
+    }
+    public void IrEdit(Clientes cliente)
+    {
+        navigationManager.NavigateTo($"/EditCliente/Id={cliente.ClientesID}");
+    }
+
+}

@@ -11,7 +11,7 @@ using PrioridadesWebA.Api.DAL;
 namespace PrioridadesWebA.Api.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20240302173526_Inicial")]
+    [Migration("20240303031836_Inicial")]
     partial class Inicial
     {
         /// <inheritdoc />
