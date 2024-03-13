@@ -34,4 +34,8 @@ public class Tickets
 
     [Required(ErrorMessage = "El campo Descripcion se encuentra vacio")]
     public string? Descripcion { get; set; }
+
+
+	[ForeignKey("TicketId")]
+	public ICollection<TicketsDetalle> TicketsDetalle { get; set; } = new List<TicketsDetalle>();
 }
