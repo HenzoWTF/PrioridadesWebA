@@ -1,5 +1,78 @@
-﻿<h3>Create</h3>
+﻿@page "/CreateSistemas"
+@using Library.Models
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+
+
+<PageTitle>sistemas</PageTitle>
+
+
+<EditForm Model="@sistemas" OnValidSubmit="Guardar">
+
+    <DataAnnotationsValidator />   <DataAnnotationsValidator />
+
+    <div class="container">
+        <div class="card shadow-lg">
+            <div class="card-header">
+                <h3> Registro de sistemas</h3>
+
+                <div class=card-body>
+
+                    @*Sistemas ID*@
+                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4">
+                        <label>ID</label>
+                        <div class="input-group mb-3">
+                            <InputNumber @bind-Value="@sistemas.SistemasId" class=" form-control" aria-describedby="BotonBuscar" />
+                            <ValidationMessage For="@(() => sistemas.SistemasId)" />
+                        </div>
+                    </div>
+
+                    @*Nombre*@
+                    <label>Nombre</label>
+                    <div class="input-group mb-3">
+                        <InputText @bind-Value="@sistemas.SistemasNombres" class=" form-control" />
+                        <ValidationMessage For="@(() => sistemas.SistemasNombres)" />
+                    </div
+
+                    <div class="card-footer d-flex justify-content-center">
+                        <div class="btn-group">
+                            <button class="btn btn-outline-success"><i class="bi bi-floppy-fill " /> Guardar</button>
+                            <a href="IndexSistemas" class="btn btn-outline-primary"><i class="bi bi-arrow-left" /> Volver</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    @mensaje
+
+</EditForm>
+
 
 @code {
+    public Sistemas sistemas { get; set; } = new Sistemas();
+    public string mensaje = "";
+
+    public void Nuevo()
+    {
+        sistemas = new Sistemas();
+    }
+
+
+    public async Task Guardar()
+    {
+        var response = await httpClient.PostAsJsonAsync("api/Sistemas", sistemas);
+        if (response.IsSuccessStatusCode)
+        {
+            mensaje = "Se guardo";
+            navigationManager.NavigateTo("/IndexSistemas");
+        }
+        else
+        {
+            mensaje = "No se guardo";
+        }
+    }
 
 }
