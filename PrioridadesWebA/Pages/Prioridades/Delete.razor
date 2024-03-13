@@ -1,5 +1,68 @@
-﻿<h3>Delete</h3>
+﻿@page "/Deleteprioridades/Id={Id:int}"
+@using Library.Models
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+
+<PageTitle>Eliminar prioridades</PageTitle>
+
+<div class="container">
+    <div class="card shadow-lg">
+        @*Header*@
+        <div class="card-header">
+            <h3><strong>Eliminar Prioridades</strong></h3>
+        </div>
+        <div class="card-body col-5">
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
+            <h4><strong>¿Est&aacute;s seguro de que quieres eliminar esta prioridad?</strong></h4>
+            @*Datos*@
+
+            @*Clientes ID*@
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4">
+                <h4>
+                    <strong>ID:</strong>
+                    @prioridades.IdPrioridades
+                </h4>
+            </div>
+
+            @*Nombre*@
+            <h4>
+                <strong>Nombre: </strong>
+                @prioridades.Descripcion
+            </h4>
+
+        </div>
+
+        <div class="card-footer d-flex justify-content-center">
+            <div class="px-2">
+                <a href="IndexCliente" class="btn btn-outline-primary"><i class="bi bi-box-arrow-left" /> Volver</a>
+            </div>
+            <button type="button" class="btn btn-outline-danger" @onclick="Eliminar"><i class="bi bi-trash3-fill" /> Eliminar</button>
+        </div>
+
+    </div>
+</div>
+
 
 @code {
+    [Parameter] public int Id { get; set; }
+    public Prioridades prioridades { get; set; } = new Prioridades();
 
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id > 0)
+        {
+            prioridades = await httpClient.GetFromJsonAsync<Prioridades>($"api/Prioridades/{Id}");
+        }
+    }
+
+    public async Task Eliminar()
+    {
+        var response = await httpClient.DeleteAsync($"api/Prioridades/{Id}");
+
+        if (response.IsSuccessStatusCode)
+        {
+
+            navigationManager.NavigateTo("/IndexPrioridades");
+        }
+    }
 }
