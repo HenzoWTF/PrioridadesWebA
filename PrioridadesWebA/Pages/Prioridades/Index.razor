@@ -1,0 +1,61 @@
+﻿@page "/IndexPrioridades"
+
+@using Library.Models
+@using Microsoft.AspNetCore.Components.QuickGrid;
+@inject NavigationManager navigationManager
+@inject HttpClient httpClient
+
+<PageTitle>Consulta Prioridades</PageTitle>
+
+<h1>Consultas Prioridades</h1>
+
+<div>
+    <a href="/CreatePrioridades" class="btn btn-outline-primary">Agregar Prioridad</a>
+</div>
+
+<table class="table-sm">
+    <tbody class="table-primary">
+
+        <QuickGrid ItemsProvider="@Prioridades">
+
+            <PropertyColumn Property="@(p =>p.IdPrioridades )" Sortable="true" Title="Id" />
+            <PropertyColumn Property="@(p => p.Descripcion)" Sortable="true" Title="Descripción" />
+
+            <TemplateColumn Title="Acciones">
+                <button class="btn btn-outline-primary" @onclick="@(() => IrEdit(context))"><i class="bi bi-pencil-square" /></button>
+                <button class="btn btn-outline-primary" @onclick="@(() => IrDetalle(context))"><i class="bi bi-eye-fill" /></button>
+                <button class="btn btn-outline-danger" @onclick="@(() => IrEliminar(context))"><i class="bi bi-trash" /></button>
+            </TemplateColumn>
+        </QuickGrid>
+    </tbody>
+</table>
+
+@code
+{
+    GridItemsProvider<Prioridades>? Prioridades;
+    bool cargando = true;
+
+    protected override void OnInitialized()
+    {
+        Prioridades = async req =>
+        {
+            var respuesta = await httpClient.GetFromJsonAsync<Prioridades[]>("api/Prioridades");
+            cargando = false;
+            return GridItemsProviderResult.From(items: respuesta!, totalItemCount: respuesta!.Count());
+        };
+    }
+
+    public void IrEliminar(Prioridades prioridades)
+    {
+        navigationManager.NavigateTo($"/DeleteCliente/Id={prioridades.IdPrioridades}");
+    }
+    public void IrDetalle(Prioridades prioridades)
+    {
+        navigationManager.NavigateTo($"/DetailsCliente/Id={prioridades.IdPrioridades}");
+    }
+    public void IrEdit(Prioridades prioridades)
+    {
+        navigationManager.NavigateTo($"/EditPrioridades/Id={prioridades.IdPrioridades}");
+    }
+
+}
