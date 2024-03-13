@@ -26,11 +26,19 @@
                         </div>
                     </div>
 
-                    @*Nombre*@
+                    @*Descripcion*@
                     <label>Descripci&oacute;n</label>
                     <div class="input-group mb-3">
                         <InputText @bind-Value="@prioridades.Descripcion" class=" form-control" />
                         <ValidationMessage For="@(() => prioridades.Descripcion)" />
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4">
+                        <label>D&iacute;as Compromiso</label>
+                        <div class="input-group mb-3">
+                            <InputNumber @bind-Value="@prioridades.DiasCompromiso" class=" form-control" aria-describedby="BotonBuscar" />
+                            <ValidationMessage For="@(() => prioridades.DiasCompromiso)" />
+                        </div>
                     </div>
 
                     <div class="card-footer d-flex justify-content-center">

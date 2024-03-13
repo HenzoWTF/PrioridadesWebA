@@ -1,4 +1,4 @@
-﻿@page "/Deleteprioridades/Id={Id:int}"
+﻿@page "/Detailsprioridades/Id={Id:int}"
 @using Library.Models
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
@@ -15,7 +15,7 @@
             <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
             @*Datos*@
 
-            @*Clientes ID*@
+            @*Prioridad ID*@
             <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4">
                 <h4>
                     <strong>ID:</strong>
@@ -23,11 +23,19 @@
                 </h4>
             </div>
 
-            @*Nombre*@
+            @*Descripcion*@
             <h4>
-                <strong>Nombre: </strong>
+                <strong>Descripci&oacute;n: </strong>
                 @prioridades.Descripcion
             </h4>
+
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4">
+                <h4>
+                    <strong>D&iacute;as Compromiso:</strong>
+                    @prioridades.DiasCompromiso
+                </h4>
+            </div>
+
 
         </div>
 
