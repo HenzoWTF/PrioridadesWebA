@@ -1,5 +1,61 @@
-﻿<h3>Index</h3>
+﻿@page "/IndexSistemas"
 
-@code {
+@using Library.Models
+@using Microsoft.AspNetCore.Components.QuickGrid;
+@inject NavigationManager navigationManager
+@inject HttpClient httpClient
+
+<PageTitle>Consulta Sistemas</PageTitle>
+
+<h1>Consultas Sistemas</h1>
+
+<div>
+    <a href="/CreateSistemas" class="btn btn-outline-primary">Agregar Prioridad</a>
+</div>
+
+<table class="table-sm">
+    <tbody class="table-primary">
+
+        <QuickGrid ItemsProvider="@Sistemas">
+
+            <PropertyColumn Property="@(p =>p.SistemasId )" Sortable="true" Title="Id" />
+            <PropertyColumn Property="@(p => p.SistemasNombres)" Sortable="true" Title="Descripción" />
+
+            <TemplateColumn Title="Acciones">
+                <button class="btn btn-outline-primary" @onclick="@(() => IrEdit(context))"><i class="bi bi-pencil-square" /></button>
+                <button class="btn btn-outline-primary" @onclick="@(() => IrDetalle(context))"><i class="bi bi-eye-fill" /></button>
+                <button class="btn btn-outline-danger" @onclick="@(() => IrEliminar(context))"><i class="bi bi-trash" /></button>
+            </TemplateColumn>
+        </QuickGrid>
+    </tbody>
+</table>
+
+@code
+{
+    GridItemsProvider<Sistemas>? Sistemas;
+    bool cargando = true;
+
+    protected override void OnInitialized()
+    {
+        Sistemas = async req =>
+        {
+            var respuesta = await httpClient.GetFromJsonAsync<Sistemas[]>("api/Sistemas");
+            cargando = false;
+            return GridItemsProviderResult.From(items: respuesta!, totalItemCount: respuesta!.Count());
+        };
+    }
+
+    public void IrEliminar(Sistemas sistemas)
+    {
+        navigationManager.NavigateTo($"/DeleteSistemas/Id={sistemas.SistemasId}");
+    }
+    public void IrDetalle(Sistemas sistemas)
+    {
+        navigationManager.NavigateTo($"/DetailsSistemas/Id={sistemas.SistemasId}");
+    }
+    public void IrEdit(Sistemas sistemas)
+    {
+        navigationManager.NavigateTo($"/EditSistemas/Id={sistemas.SistemasId}");
+    }
 
 }
