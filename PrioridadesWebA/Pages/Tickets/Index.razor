@@ -1,1 +1,67 @@
-﻿
+﻿@page "/IndexTickets"
+
+@using Library.Models
+@using Microsoft.AspNetCore.Components.QuickGrid;
+@inject NavigationManager navigationManager
+@inject HttpClient httpClient
+
+<PageTitle>Consulta Tickets</PageTitle>
+
+<h1>Consultas Tickets</h1>
+
+<div>
+    <a href="/CreateTickets" class="btn btn-outline-primary">Agregar Tickets</a>
+</div>
+
+<table class="table-sm">
+    <tbody class="table-primary">
+
+        <QuickGrid ItemsProvider="@tickets">
+
+            <PropertyColumn Property="@(p =>p.SistemasId )" Sortable="true" Title="Id" />
+            <PropertyColumn Property="@(p => p.Fecha)" Sortable="true" Title="Fecha" Format="dd-mm-yyyy" />
+            <PropertyColumn Property="@(p => p.SolicitadoPor)" Sortable="true" Title="Solicitado por" />
+            <PropertyColumn Property="@(p => p.ClientesId)" Sortable="true" Title="Cliente Id" />
+            <PropertyColumn Property="@(p => p.SistemasId)" Sortable="true" Title="Sistema Id" />
+            <PropertyColumn Property="@(p => p.Descripcion)" Sortable="true" Title="Descripción" />
+            <PropertyColumn Property="@(p => p.PrioridadesId)" Sortable="true" Title="Prioridad Id" />
+            <PropertyColumn Property="@(p => p.Asunto)" Sortable="true" Title="Asunto" />
+
+            <TemplateColumn Title="Acciones">
+                <button class="btn btn-outline-primary" @onclick="@(() => IrEdit(context))"><i class="bi bi-pencil-square" /></button>
+                <button class="btn btn-outline-primary" @onclick="@(() => IrDetalle(context))"><i class="bi bi-eye-fill" /></button>
+                <button class="btn btn-outline-danger" @onclick="@(() => IrEliminar(context))"><i class="bi bi-trash" /></button>
+            </TemplateColumn>
+        </QuickGrid>
+    </tbody>
+</table>
+
+@code
+{
+    GridItemsProvider<Tickets>? tickets;
+    bool cargando = true;
+
+    protected override void OnInitialized()
+    {
+        tickets = async req =>
+        {
+            var respuesta = await httpClient.GetFromJsonAsync<Tickets[]>("api/Tickets");
+            cargando = false;
+            return GridItemsProviderResult.From(items: respuesta!, totalItemCount: respuesta!.Count());
+        };
+    }
+
+    public void IrEliminar(Tickets tickets)
+    {
+        navigationManager.NavigateTo($"/DeleteTickets/Id={tickets.TicketsId}");
+    }
+    public void IrDetalle(Tickets tickets)
+    {
+        navigationManager.NavigateTo($"/DetailsTickets/Id={tickets.TicketsId}");
+    }
+    public void IrEdit(Tickets tickets)
+    {
+        navigationManager.NavigateTo($"/EditTickets/Id={tickets.TicketsId}");
+    }
+
+}
